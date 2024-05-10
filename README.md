@@ -22,3 +22,6 @@ Documentation and Testing:
 
 ornek repository : 
     https://github.com/airportyh/smallang
+
+    video playlistler : 
+        www.youtube.com/watch?v=Xu4RtLlm42I
