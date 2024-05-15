@@ -1,0 +1,26 @@
+https://www.geeksforgeeks.org/flex-fast-lexical-analyzer-generator/ 
+
+Here is a summary of our conversation:
+
+**Title:** Designing a Programming Language from Scratch
+
+**Introduction:**
+We designed a programming language from scratch, covering the basics of language design, including syntax, semantics, and implementation. This summary provides an overview of our conversation, starting from the basics of language design and progressing to more advanced topics.
+
+**Simple Features:**
+
+* **Integers:** We defined the syntax and semantics of integers, including basic arithmetic operations like addition and subtraction.
+* **Variables:** We introduced variables, which can store and retrieve values, and defined the syntax and semantics of variable assignments.
+* **Basic Control Flow:** We added basic control flow statements, including if-else statements and conditional jumps.
+* **Functions:** We defined the syntax and semantics of functions, including function declarations, parameter passing, and function calls.
+
+**Lexical Analysis:**
+We wrote lexical analyzers for each feature, using regular expressions to define the syntax of each feature. The lexical analyzers break the source code into individual tokens, which are then parsed and executed by the interpreter.
+
+**Implementation:**
+We discussed the implementation of the language, including the lexer, parser, and interpreter. The lexer breaks the source code into tokens, the parser builds an abstract syntax tree (AST), and the interpreter executes the AST.
+
+**Conclusion:**
+We designed a programming language from scratch, covering the basics of language design, including syntax, semantics, and implementation. This language includes simple features like integers, variables, basic control flow, and functions, and is implemented using a lexer, parser, and interpreter.
+
+This summary should provide a comprehensive overview of our conversation, covering the basics of language design and implementation.

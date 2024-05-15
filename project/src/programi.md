@@ -1,0 +1,1 @@
+make compile diyin terminalde srcye girip kod main.c caliscak:
