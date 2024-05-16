@@ -5,6 +5,27 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+/*
+<program> ::= <stmt_list> EOF
+<stmt_list> ::= <stmt> | <stmt> <stmt_list>
+<stmt> ::= <assign_stmt> | <expr_stmt>
+<assign_stmt> ::= <identifier> = <expr> ;
+<expr_stmt> ::= <expr> ;
+<expr> ::= <term> ((+ | -) <term>)*
+<term> ::= <factor> (( * | / ) <factor>)*
+<factor> ::= <number> | <identifier>
+<identifier> ::= IDENTIFIER
+<number> ::= NUMBER
+
+
+x = 5;
+y = x + 2;
+z = y * 3;
+ */
+
+
+
 class Tok {
     String typ;
     String val;
@@ -273,7 +294,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        String cd = "x = 5;\ny = x + 2;\nz = y * 3;";
+        String cd = "x = 5;\ny = x  + 432;\nz = y * 3;";
         List<Tok> toks = tokenize(cd);
         Prsr prsr = new Prsr(toks);
         StmtLst program = prsr.program();
