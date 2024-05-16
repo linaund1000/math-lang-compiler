@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 //<program> ::= <stmt> EOF
 //<stmt> ::= <assign_stmt>
-//<assign_stmt> ::= IDENTIFIER ASSIGN <expr> STATEMENT_SEPARATOR
+//<assign_stmt> ::= IDENTIFIER ASSIGN <expr> ;
 //<expr> ::= NUMBER
 //<program> ::= <stmt_list>
 //<stmt_list> ::= <stmt> | <stmt> <stmt_list>
@@ -15,6 +15,25 @@ import java.util.regex.Pattern;
 //<number> ::= NUMBER
 
 
+//birsonraki soyle olmali -- variable clasorunde calisan var
+
+/*
+<program> ::= <stmt_list> EOF
+<stmt_list> ::= <stmt> | <stmt> <stmt_list>
+<stmt> ::= <assign_stmt> | <expr_stmt>
+<assign_stmt> ::= <identifier> = <expr> ;
+<expr_stmt> ::= <expr> ;
+<expr> ::= <term> ((+ | -) <term>)*
+<term> ::= <factor> (( * | / ) <factor>)*
+<factor> ::= <number> | <identifier>
+<identifier> ::= IDENTIFIER
+<number> ::= NUMBER
+
+
+x = 5;
+y = x + 2;
+z = y * 3;
+ */
 
 
 class Tok {
