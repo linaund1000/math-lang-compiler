@@ -1,0 +1,14 @@
+<program> ::= <stmt_list>
+<stmt_list> ::= <stmt> | <stmt> <stmt_list>
+<stmt> ::= <assign_stmt> | <print_stmt>
+<assign_stmt> ::= <identifier> "=" <expr>
+<print_stmt> ::= "print" <expr>
+<expr> ::= <term> | <expr> <addop> <term>
+<term> ::= <factor> | <term> <mulop> <factor>
+<factor> ::= <identifier> | <number> | "(" <expr> ")"
+<addop> ::= "+" | "-"
+<mulop> ::= "*" | "/"
+<identifier> ::= <letter> | <identifier> <letter> | <identifier> <digit>
+<letter> ::= "a" | "b" | ... | "z" | "A" | "B" | ... | "Z"
+<digit> ::= "0" | "1" | ... | "9"
+<number> ::= <digit> | <number> <digit>
