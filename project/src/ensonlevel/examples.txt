@@ -1,0 +1,131 @@
+
+State Diagrams:
+
+If statement (eğer)
+While loop (döngü)
+Function definition (fonksiyon)
+Function call
+Assignment statement
+Print statement (yazdır)
+
+
+
+
+Look-up Table:
+
+Keywords: fonksiyon, eğer, değilse, döngü, yazdır, döndür, (dur falan eklenebilir)
+Operators: +, -, *, /, =
+Symbols: ,, ;, (, ), {, }
+Turkish letters: ğ, ş, ö, ü, Ğ, Ş, Ö, Ü
+Digits: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+Letters: a-z, A-Z
+
+
+
+
+BNF
+<program> ::= <statement>+
+
+<statement> ::= <assignment_statement>
+              | <function_definition>
+              | <function_call>
+              | <conditional_statement>
+              | <loop_statement>
+              | <print_statement>
+
+<assignment_statement> ::= <variable> "=" <expression> ";"
+
+<function_definition> ::= "fonksiyon" <function_name> "(" <parameter_list>? ")" "{" <statement>+ "döndür" <expression> ";" "}"
+
+<function_call> ::= <function_name> "(" <argument_list>? ")"
+
+<conditional_statement> ::= "eğer" <expression> "{" <statement>+ "}" ("değilse" "eğer" <expression> "{" <statement>+ "}")? ("değilse" "{" <statement>+ "}")?
+
+<loop_statement> ::= "döngü" <expression> "{" <statement>+ "}"
+
+<print_statement> ::= "yazdır" "(" <expression> ")" ";"
+
+<expression> ::= <term> (("+" | "-") <term>)*
+
+<term> ::= <factor> (("*" | "/") <factor>)*
+
+<factor> ::= "(" <expression> ")"
+           | <variable>
+           | <number>
+           | <function_call>
+
+<variable> ::= <letter> (<letter> | <digit>)*
+
+<function_name> ::= <letter> (<letter> | <digit>)*
+
+<parameter_list> ::= <variable> ("," <variable>)*
+
+<argument_list> ::= <expression> ("," <expression>)*
+
+<number> ::= ["-"] <digit>+ ("." <digit>+)?
+
+<letter> ::= "a" | "b" | "c" | ... | "z" | "A" | "B" | "C" | ... | "Z" | "ğ" | "ş" | "ö" | "ü" | "Ğ" | "Ş" | "Ö" | "Ü"
+
+<digit> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+
+
+
+
+
+
+
+
+
+
+KAYNAK KODLAR
+
+
+# Variable definition and assignment
+sayi = 42;
+gerçekSayı = 3.14;
+metin = "Merhaba, Dünya!";
+
+# Arithmetic expression
+toplam = sayi + gerçekSayı;
+fark = sayi - gerçekSayı;
+çarpım = sayi * gerçekSayı;
+bölüm = sayi / gerçekSayı;
+
+# Function call
+yazdır(metin);
+yazdır(toplam);
+yazdır(fark);
+yazdır(çarpım);
+yazdır(bölüm);
+
+# Function definition
+fonksiyon alanHesapla(genişlik, yükseklik) {
+    alan = genişlik * yükseklik;
+    döndür alan;
+}
+
+# Variable definition and assignment
+dikdörtgenGenişlik = 10;
+dikdörtgenYükseklik = 5;
+
+# Function call
+dikdörtgenAlanı = alanHesapla(dikdörtgenGenişlik, dikdörtgenYükseklik);
+
+yazdır("Dikdörtgenin alanı: ");
+yazdır(dikdörtgenAlanı);
+
+
+
+# Variable definition and assignment
+sayı1 = 10;
+sayı2 = 20;
+sayı3 = 30;
+
+# Conditional statement (if-else)
+eğer sayı1 > sayı2 {
+    yazdır("sayı1 büyüktür sayı2'den");
+} değilse eğer sayı1 > sayı3 {
+    yazdır("sayı1 büyüktür sayı3'ten");
+} değilse {
+    yazdır("sayı1 en küçük sayıdır");
+}
