@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /*
 <program> ::= <stmt_list> EOF
 <stmt_list> ::= <stmt> | <stmt> <stmt_list>
@@ -23,8 +22,6 @@ x = 5;
 y = x + 2;
 z = y * 3;
  */
-
-
 
 class Tok {
     String typ;
@@ -156,10 +153,12 @@ public class Main {
         List<Tok> toks = new ArrayList<>();
         String[] lines = cd.split("\n");
         for (String ln : lines) {
-            Pattern p = Pattern.compile("\\w+|[=;+\\-*/]|\\d+");
-            Matcher m = p.matcher(ln);
+            System.out.println("Processing line: " + ln); // Debugging line
+            Pattern p = Pattern.compile("[a-zA-ZçÇğĞıİöÖşŞüÜ_][a-zA-Z0-9çÇğĞıİöÖşŞüÜ_]*|[=;+\\-*/]|\\d+");  
+                Matcher m = p.matcher(ln);
             while (m.find()) {
                 String tok = m.group();
+                System.out.println("Matched token: " + tok); // Debugging line
                 if (tok.equals("=")) {
                     toks.add(new Tok("ASSIGN", "="));
                 } else if (tok.equals(";")) {
@@ -174,14 +173,16 @@ public class Main {
                     toks.add(new Tok("DIVIDE", "/"));
                 } else if (tok.matches("0|[1-9][0-9]*")) {
                     toks.add(new Tok("NUMBER", tok));
-                } else if (tok.matches("[a-zA-Z_][a-zA-Z_0-9]*")) {
+                } else if (tok.matches("[a-zA-ZçÇğĞıİöÖşŞüÜ_][a-zA-Z0-9çÇğĞıİöÖşŞüÜ_]*")) {
                     toks.add(new Tok("IDENTIFIER", tok));
                 } else {
+                    System.out.println("Invalid token: " + tok); // Debugging line
                     throw new RuntimeException("Invalid token: " + tok);
                 }
             }
         }
         toks.add(new Tok("EOF", null));
+        System.out.println("Final tokens: " + toks); // Debugging line
         return toks;
     }
 
@@ -294,7 +295,8 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        String cd = "x = 5;\ny = x  + 432;\nz = y * 3;";
+        String cd = "çalışma = 12;\ny = ö + 3;\nz = y * 3;";
+        System.out.println(cd);
         List<Tok> toks = tokenize(cd);
         Prsr prsr = new Prsr(toks);
         StmtLst program = prsr.program();
