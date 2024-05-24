@@ -297,3 +297,150 @@ class Prsr {
         Expr expr = expr();
         match(Tok.STATEMENT_SEPARATOR);
         return new Expr
+    IfStmt ifStmt() {
+    match(Tok.IF);
+    Expr condition = expr();
+    match(Tok.THEN);
+    Stmt thenStmt = stmt();
+    Stmt elseStmt = null;
+    if (peek().typ.equals(Tok.ELSE)) {
+        match(Tok.ELSE);
+        elseStmt = stmt();
+    }
+    return new IfStmt(condition, thenStmt, elseStmt);
+}
+
+WhileStmt whileStmt() {
+    match(Tok.WHILE);
+    Expr condition = expr();
+    match(Tok.DO);
+    Stmt bodyStmt = stmt();
+    return new WhileStmt(condition, bodyStmt);
+}
+
+Expr expr() {
+    Term term = term();
+    List<String> ops = new ArrayList<>();
+    List<Term> terms = new ArrayList<>();
+    while (peek().typ.equals(Tok.PLUS) || peek().typ.equals(Tok.MINUS)) {
+        String op = next().val;
+        Term nextTerm = term();
+        ops.add(op);
+        terms.add(nextTerm);
+    }
+    return new Expr(term, ops, terms);
+}
+
+Term term() {
+    Factor factor = factor();
+    List<String> ops = new ArrayList<>();
+    List<Factor> factors = new ArrayList<>();
+    while (peek().typ.equals(Tok.MULTIPLY) || peek().typ.equals(Tok.DIVIDE)) {
+        String op = next().val;
+        Factor nextFactor = factor();
+        ops.add(op);
+        factors.add(nextFactor);
+    }
+    return new Term(factor, ops, factors);
+}
+
+Factor factor() {
+    if (peek().typ.equals(Tok.NUMBER)) {
+        int num = Integer.parseInt(next().val);
+        return new Factor(new Num(num));
+    } else if (peek().typ.equals(Tok.IDENTIFIER)) {
+        Idt idt = identifier();
+        return new Factor(idt);
+    } else {
+        throw new RuntimeException("Expected NUMBER or IDENTIFIER, but got " + peek().typ);
+    }
+}
+
+Idt identifier() {
+    String val = next().val;
+    return new Idt(val);
+}
+
+Tok next() {
+    return toks.get(idx++);
+}
+
+Tok peek() {
+    return toks.get(idx);
+}
+
+void match(String expectedType) {
+    Tok tok = next();
+    if (!tok.typ.equals(expectedType)) {
+        throw new RuntimeException("Expected " + expectedType + ", but got " + tok.typ);
+    }
+}
+
+class Prnt {
+    void prntStmtLst(StmtLst stmtLst) {
+        while (stmtLst != null) {
+            prntStmt(stmtLst.stmt);
+            stmtLst = stmtLst.stmtLst;
+        }
+    }
+
+    void prntStmt(Stmt stmt) {
+        if (stmt.asnStmt != null) {
+            prntAsnStmt(stmt.asnStmt);
+        } else if (stmt.exprStmt != null) {
+            prntExprStmt(stmt.exprStmt);
+        } else if (stmt.ifStmt != null) {
+            prntIfStmt(stmt.ifStmt);
+        } else if (stmt.whileStmt != null) {
+            prntWhileStmt(stmt.whileStmt);
+        }
+    }
+
+    void prntAsnStmt(AsnStmt asnStmt) {
+        System.out.println(asnStmt.idt.val + " = " + prntExpr(asnStmt.expr));
+    }
+
+    void prntExprStmt(ExprStmt exprStmt) {
+        System.out.println(prntExpr(exprStmt.expr));
+    }
+
+    void prntIfStmt(IfStmt ifStmt) {
+        System.out.println("eğer " + prntExpr(ifStmt.condition) + " ise");
+        prntStmt(ifStmt.thenStmt);
+        if (ifStmt.elseStmt != null) {
+            System.out.println("aksi");
+            prntStmt(ifStmt.elseStmt);
+        }
+    }
+
+    void prntWhileStmt(WhileStmt whileStmt) {
+        System.out.println("iken " + prntExpr(whileStmt.condition) + " yap");
+        prntStmt(whileStmt.bodyStmt);
+    }
+
+    String prntExpr(Expr expr) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(prntTerm(expr.term));
+        for (int i = 0; i < expr.ops.size(); i++) {
+            sb.append(" ").append(expr.ops.get(i)).append(" ").append(prntTerm(expr.terms.get(i)));
+        }
+        return sb.toString();
+    }
+
+    String prntTerm(Term term) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(prntFactor(term.factor));
+        for (int i = 0; i < term.ops.size(); i++) {
+            sb.append(" ").append(term.ops.get(i)).append(" ").append(prntFactor(term.factors.get(i)));
+        }
+        return sb.toString();
+    }
+
+    String prntFactor(Factor factor) {
+        if (factor.num != null) {
+            return Integer.toString(factor.num.val);
+        } else {
+            return factor.idt.val;
+        }
+    }
+}
