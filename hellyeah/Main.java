@@ -17,25 +17,8 @@ public class Main {
         ProgramNode program = parser.parseProgram();
 
         // Print the AST tree
-        printAST(program, 0);
+        System.out.println(program);
     }
 
-    public static void printAST(ASTNode node, int indent) {
-        for (int i = 0; i < indent; i++) {
-            System.out.print("  ");
-        }
-        if (node instanceof ProgramNode) {
-            System.out.println("Program");
-            for (StatementNode statement : ((ProgramNode) node).statements) {
-                printAST(statement, indent + 1);
-            }
-        } else if (node instanceof AssignmentNode) {
-            System.out.println("Assignment: " + ((AssignmentNode) node).variable);
-            printAST(((AssignmentNode) node).expression, indent + 1);
-        } else if (node instanceof NumberNode) {
-            System.out.println("Number: " + ((NumberNode) node).value);
-        } else if (node instanceof VariableNode) {
-            System.out.println("Variable: " + ((VariableNode) node).name);
-        }
-    }
+
 }
