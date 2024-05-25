@@ -1,0 +1,150 @@
+PROGRAM ::= STATEMENT_LIST EOF
+// Example: 
+// statement1;
+// statement2;
+// ...
+
+STATEMENT_LIST ::= STATEMENT (SEMICOLON STATEMENT)*
+// Example: 
+// statement1;
+// statement2;
+// ...
+
+STATEMENT ::= ASSIGN_STMT | IF_STMT | WHILE_STMT | EXPRESSION_STMT
+// Example: 
+// x = 5;
+// if (x > 5) { ... }
+// while (x < 10) { ... }
+// x + 5; // i dont want it to be done i want it to return something x=x+5; for example
+
+ASSIGN_STMT ::= VARIABLE = EXPRESSION SEMICOLON
+// Example: 
+// x = 5;
+
+VARIABLE ::= IDENTIFIER
+// Example: 
+// x
+
+IDENTIFIER ::= [a-zA-ZçÇğĞıİöÖşŞüÜ_][a-zA-Z0-9çÇğĞıİöÖşŞüÜ_]*
+// Example: 
+// x
+// myVariable
+
+EXPRESSION ::= TERM ((ADD | SUB) TERM)*
+// Example: 
+// x + 5
+// x - 3
+// x + 5 - 3
+
+TERM ::= VARIABLE | NUMBER | LPAREN EXPRESSION RPAREN
+// Example: 
+// x
+// 5
+// (x + 5)
+
+NUMBER ::= [0-9]+
+// Example: 
+// 5
+// 10
+// 20
+
+IF_STMT ::= IF_CLAUSE LBRACE THEN_STMT RBRACE ELSE_CLAUSE LBRACE ELSE_STMT RBRACE END_STMT
+// Example: 
+// if (x > 5) {
+//     statement1;
+//     statement2;
+// } else {
+//     statement3;
+//     statement4;
+// }
+// end;
+
+IF_CLAUSE ::= IF LPAREN EXPRESSION RPAREN
+// Example: 
+// if (x > 5)
+
+THEN_STMT ::= STATEMENT*
+// Example: 
+// statement1;
+// statement2;
+// ...
+
+ELSE_CLAUSE ::= ELSE
+// Example: 
+// else
+
+ELSE_STMT ::= STATEMENT*
+// Example: 
+// statement1;
+// statement2;
+// ...
+
+END_STMT ::= END SEMICOLON
+// Example: 
+// end;
+
+WHILE_STMT ::= WHILE_CLAUSE LBRACE DO_STMT RBRACE END_STMT
+// Example: 
+// while (x < 10) {
+//     statement1;
+//     statement2;
+// }
+// end;
+
+WHILE_CLAUSE ::= WHILE LPAREN EXPRESSION RPAREN
+// Example: 
+// while (x < 10)
+
+DO_STMT ::= STATEMENT*
+// Example: 
+// statement1;
+// statement2;
+// ...
+
+EXPRESSION_STMT ::= EXPRESSION SEMICOLON
+// Example: 
+// x + 5;
+
+ADD ::= +
+// Example: 
+// +
+
+SUB ::= -
+// Example: 
+// -
+
+LPAREN ::= (
+// Example: 
+// (
+
+RPAREN ::= )
+// Example: 
+// )
+
+LBRACE ::= {
+// Example: 
+// {
+
+RBRACE ::= }
+// Example: 
+// }
+
+SEMICOLON ::= ;
+// Example: 
+// ;
+
+END ::= end
+// Example: 
+// end
+
+IF ::= if
+// Example: 
+// if
+
+ELSE ::= else
+// Example: 
+// else
+
+WHILE ::= while
+// Example: 
+// while 
