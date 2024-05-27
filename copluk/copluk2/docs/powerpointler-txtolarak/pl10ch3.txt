@@ -1,0 +1,836 @@
+Chapter 3
+
+
+Describing Syntax
+and Semantics
+Chapter 3 Topics
+
+•      Introduction
+•      The General Problem of Describing Syntax
+•      Formal Methods of Describing Syntax
+•      Attribute Grammars
+•      Describing the Meanings of Programs:
+       Dynamic Semantics
+
+
+
+
+.   1-2
+Introduction
+
+• Syntax: the form or structure of the
+  expressions, statements, and program
+  units
+• Semantics: the meaning of the expressions,
+  statements, and program units
+• Syntax and semantics provide a language’s
+  definition
+      – Users of a language definition
+              • Other language designers
+              • Implementers
+              • Programmers (the users of the language)
+
+.     1-3
+The General Problem of Describing
+Syntax: Terminology
+
+• A sentence is a string of characters over
+  some alphabet
+
+• A language is a set of sentences
+
+• A lexeme is the lowest level syntactic unit
+  of a language (e.g., *, sum, begin)
+
+• A token is a category of lexemes (e.g.,
+  identifier)
+
+.   1-4
+Formal Definition of Languages
+
+• Recognizers
+      – A recognition device reads input strings over the alphabet
+        of the language and decides whether the input strings
+        belong to the language
+      – Example: syntax analysis part of a compiler
+         - Detailed discussion of syntax analysis appears in
+            Chapter 4
+
+• Generators
+      – A device that generates sentences of a language
+      – One can determine if the syntax of a particular sentence is
+        syntactically correct by comparing it to the structure of
+        the generator
+
+
+
+.             1-5
+BNF and Context-Free Grammars
+
+• Context-Free Grammars
+     – Developed by Noam Chomsky in the mid-1950s
+     – Language generators, meant to describe the
+       syntax of natural languages
+     – Define a class of languages called context-free
+       languages
+
+
+• Backus-Naur Form (1959)
+     – Invented by John Backus to describe the syntax
+       of Algol 58
+     – BNF is equivalent to context-free grammars
+.    1-6
+BNF Fundamentals
+
+• In BNF, abstractions are used to represent classes
+  of syntactic structures--they act like syntactic
+  variables (also called nonterminal symbols, or just
+  terminals)
+
+• Terminals are lexemes or tokens
+
+• A rule has a left-hand side (LHS), which is a
+  nonterminal, and a right-hand side (RHS), which is
+  a string of terminals and/or nonterminals
+
+
+
+
+.   1-7
+BNF Fundamentals                                        (continued)
+
+• Nonterminals are often enclosed in angle brackets
+
+      – Examples of BNF rules:
+           <ident_list> → identifier | identifier, <ident_list>
+           <if_stmt> → if <logic_expr> then <stmt>
+
+• Grammar: a finite non-empty set of rules
+
+• A start symbol is a special element of the
+  nonterminals of a grammar
+
+
+
+
+.                 1-8
+BNF Rules
+
+
+• An abstraction (or nonterminal symbol)
+  can have more than one RHS
+                 <stmt>  <single_stmt>
+                        | begin <stmt_list> end
+
+
+
+
+.   1-9
+Describing Lists
+
+• Syntactic lists are described using
+  recursion
+    <ident_list>  ident
+                                               | ident, <ident_list>
+
+
+• A derivation is a repeated application of
+  rules, starting with the start symbol and
+  ending with a sentence (all terminal
+  symbols)
+
+
+ .                 1-10
+An Example Grammar
+
+ <program>  <stmts>
+  <stmts>  <stmt> | <stmt> ; <stmts>
+  <stmt>  <var> = <expr>
+  <var>  a | b | c | d
+  <expr>  <term> + <term> | <term> - <term>
+  <term>  <var> | const
+
+
+
+
+.   1-11
+An Example Derivation
+
+   <program> => <stmts> => <stmt>
+                       => <var> = <expr>
+                       => a = <expr>
+                       => a = <term> + <term>
+                       => a = <var> + <term>
+                       => a = b + <term>
+                       => a = b + const
+
+
+
+
+.   1-12
+Derivations
+
+• Every string of symbols in a derivation is a
+  sentential form
+• A sentence is a sentential form that has
+  only terminal symbols
+• A leftmost derivation is one in which the
+  leftmost nonterminal in each sentential
+  form is the one that is expanded
+• A derivation may be neither leftmost nor
+  rightmost
+
+.   1-13
+Parse Tree
+
+• A hierarchical representation of a derivation
+                                                         <program>
+
+                                                          <stmts>
+
+                                                          <stmt>
+
+                                                  <var>     =     <expr>
+
+                                                        a <term> +     <term>
+
+                                                          <var>            const
+
+                                                            b
+.                              1-14
+Ambiguity in Grammars
+
+• A grammar is ambiguous if and only if it
+  generates a sentential form that has two
+  or more distinct parse trees
+
+
+
+
+.   1-15
+An Ambiguous Expression Grammar
+
+<expr>  <expr> <op> <expr>                                         |    const
+<op>  / | -
+
+                                   <expr>                                         <expr>
+
+
+
+                      <expr>              <op> <expr>                   <expr> <op>           <expr>
+
+
+
+           <expr> <op> <expr>                                                           <expr> <op> <expr>
+
+
+              const            -      const             /   const         const     -      const /     const
+
+.                                                   1-16
+An Unambiguous Expression Grammar
+
+• If we use the parse tree to indicate
+  precedence levels of the operators, we
+  cannot have ambiguity
+<expr>  <expr> - <term> | <term>
+<term>  <term> / const| const
+
+                                                        <expr>
+
+
+                                             <expr>       -      <term>
+
+                                             <term>           <term> /    const
+
+                                             const            const
+.                             1-17
+Associativity of Operators
+
+• Operator associativity can also be indicated by a
+  grammar
+
+<expr> -> <expr> + <expr> |                                         const     (ambiguous)
+<expr> -> <expr> + const |                                          const     (unambiguous)
+
+                                                             <expr>
+                                                             <expr>
+
+
+                                             <expr>             +     const
+
+
+                                     <expr>             +   const
+
+
+                                      const
+.                                         1-18
+Extended BNF
+
+• Optional parts are placed in brackets [ ]
+   <proc_call> -> ident [(<expr_list>)]
+• Alternative parts of RHSs are placed
+  inside parentheses and separated via
+  vertical bars
+   <term> → <term> (+|-) const
+• Repetitions (0 or more) are placed inside
+  braces { }
+   <ident> → letter {letter|digit}
+
+
+.   1-19
+BNF and EBNF
+
+• BNF
+         <expr>  <expr> + <term>
+                | <expr> - <term>
+                | <term>
+          <term>  <term> * <factor>
+                | <term> / <factor>
+                | <factor>
+• EBNF
+         <expr>  <term> {(+ | -) <term>}
+          <term>  <factor> {(* | /) <factor>}
+
+
+.   1-20
+Recent Variations in EBNF
+
+•   Alternative RHSs are put on separate lines
+•   Use of a colon instead of =>
+•   Use of opt for optional parts
+•   Use of oneof for choices
+
+
+
+
+.   1-21
+Static Semantics
+
+• Nothing to do with meaning
+• Context-free grammars (CFGs) cannot
+  describe all of the syntax of programming
+  languages
+• Categories of constructs that are trouble:
+   - Context-free, but cumbersome (e.g.,
+      types of operands in expressions)
+   - Non-context-free (e.g., variables must
+      be declared before they are used)
+
+.   1-22
+Attribute Grammars
+
+
+• Attribute grammars (AGs) have additions
+  to CFGs to carry some semantic info on
+  parse tree nodes
+
+• Primary value of AGs:
+     – Static semantics specification
+     – Compiler design (static semantics checking)
+
+
+
+.   1-23
+Attribute Grammars : Definition
+
+• Def: An attribute grammar is a context-free
+  grammar G = (S, N, T, P) with the following
+  additions:
+      – For each grammar symbol x there is a set A(x)
+        of attribute values
+      – Each rule has a set of functions that define
+        certain attributes of the nonterminals in the rule
+      – Each rule has a (possibly empty) set of
+        predicates to check for attribute consistency
+
+
+
+.    1-24
+Attribute Grammars: Definition
+
+• Let X0  X1 ... Xn be a rule
+• Functions of the form S(X0) = f(A(X1), ... ,
+  A(Xn)) define synthesized attributes
+• Functions of the form I(Xj) = f(A(X0), ... ,
+  A(Xn)), for i <= j <= n, define inherited
+    attributes
+• Initially, there are intrinsic attributes on the
+  leaves
+
+
+
+.   1-25
+Attribute Grammars: An Example
+
+• Syntax
+     <assign> -> <var> = <expr>
+     <expr> -> <var> + <var> | <var>
+     <var> A | B | C
+• actual_type: synthesized for <var>
+  and <expr>
+• expected_type: inherited for <expr>
+
+
+.   1-26
+Attribute Grammar (continued)
+
+• Syntax rule: <expr>  <var>[1] + <var>[2]
+  Semantic rules:
+  <expr>.actual_type  <var>[1].actual_type
+  Predicate:
+    <var>[1].actual_type == <var>[2].actual_type
+    <expr>.expected_type == <expr>.actual_type
+
+
+• Syntax rule: <var>  id
+  Semantic rule:
+  <var>.actual_type  lookup (<var>.string)
+
+
+.   1-27
+Attribute Grammars (continued)
+
+• How are attribute values computed?
+      – If all attributes were inherited, the tree could be
+        decorated in top-down order.
+      – If all attributes were synthesized, the tree could
+        be decorated in bottom-up order.
+      – In many cases, both kinds of attributes are
+        used, and it is some combination of top-down
+        and bottom-up that must be used.
+
+
+
+
+.     1-28
+Attribute Grammars (continued)
+
+<expr>.expected_type  inherited from parent
+
+<var>[1].actual_type  lookup (A)
+<var>[2].actual_type  lookup (B)
+<var>[1].actual_type =? <var>[2].actual_type
+
+<expr>.actual_type  <var>[1].actual_type
+<expr>.actual_type =? <expr>.expected_type
+
+
+
+
+ .   1-29
+Semantics
+
+• There is no single widely acceptable
+  notation or formalism for describing
+  semantics
+• Several needs for a methodology and
+  notation for semantics:
+      – Programmers need to know what statements mean
+      – Compiler writers must know exactly what language
+        constructs do
+      – Correctness proofs would be possible
+      – Compiler generators would be possible
+      – Designers could detect ambiguities and inconsistencies
+
+
+.            1-30
+Operational Semantics
+
+• Operational Semantics
+      – Describe the meaning of a program by
+        executing its statements on a machine, either
+        simulated or actual. The change in the state of
+        the machine (memory, registers, etc.) defines
+        the meaning of the statement
+• To use operational semantics for a high-
+  level language, a virtual machine is needed
+
+
+
+
+.     1-31
+Operational Semantics
+
+• A hardware pure interpreter would be too
+  expensive
+• A software pure interpreter also has
+  problems
+      – The detailed characteristics of the particular
+        computer would make actions difficult to
+        understand
+      – Such a semantic definition would be machine-
+        dependent
+
+
+
+.    1-32
+Operational Semantics (continued)
+
+• A better alternative: A complete computer
+  simulation
+• The process:
+      – Build a translator (translates source code to the
+        machine code of an idealized computer)
+      – Build a simulator for the idealized computer
+• Evaluation of operational semantics:
+      – Good if used informally (language manuals, etc.)
+      – Extremely complex if used formally (e.g., VDL),
+        it was used for describing semantics of PL/I.
+
+.       1-33
+Operational Semantics (continued)
+• Uses of operational semantics:
+  - Language manuals and textbooks
+  - Teaching programming languages
+
+• Two different levels of uses of operational
+  semantics:
+  - Natural operational semantics
+  - Structural operational semantics
+
+• Evaluation
+  - Good if used informally (language
+    manuals, etc.)
+  - Extremely complex if used formally (e.g.,VDL)
+.   1-34
+Denotational Semantics
+
+• Based on recursive function theory
+• The most abstract semantics description
+  method
+• Originally developed by Scott and Strachey
+  (1970)
+
+
+
+
+.   1-35
+Denotational Semantics -                                continued
+
+
+• The process of building a denotational
+  specification for a language:
+      - Define a mathematical object for each language
+        entity
+      – Define a function that maps instances of the
+        language entities onto instances of the
+        corresponding mathematical objects
+• The meaning of language constructs are
+  defined by only the values of the program's
+  variables
+
+.               1-36
+Denotational Semantics:                                 program state
+
+
+• The state of a program is the values of all
+  its current variables
+                 s = {<i1, v1>, <i2, v2>, …, <in, vn>}
+
+
+• Let VARMAP be a function that, when given
+  a variable name and a state, returns the
+  current value of the variable
+      VARMAP(ij, s) = vj
+
+
+
+.               1-37
+Decimal Numbers
+
+<dec_num>                        '0' | '1' | '2' | '3' | '4' | '5' |
+                                  '6' | '7' | '8' | '9' |
+                                  <dec_num> ('0' | '1' | '2' | '3' |
+                                             '4' | '5' | '6' | '7' |
+                                             '8' | '9')
+
+Mdec('0') = 0,                        Mdec ('1') = 1, …, Mdec ('9') = 9
+Mdec (<dec_num>                       '0') = 10 * Mdec (<dec_num>)
+Mdec (<dec_num>                       '1’) = 10 * Mdec (<dec_num>) + 1
+…
+Mdec (<dec_num>                       '9') = 10 * Mdec (<dec_num>) + 9
+
+
+
+
+.                     1-38
+Expressions
+
+• Map expressions onto Z  {error}
+• We assume expressions are decimal
+  numbers, variables, or binary expressions
+  having one arithmetic operator and two
+  operands, each of which can be an
+  expression
+
+
+
+
+.   1-39
+Expressions
+
+Me(<expr>, s) =
+    case <expr> of
+      <dec_num> => Mdec(<dec_num>, s)
+      <var> =>
+           if VARMAP(<var>, s) == undef
+                 then error
+                 else VARMAP(<var>, s)
+     <binary_expr> =>
+          if (Me(<binary_expr>.<left_expr>, s) == undef
+                 OR Me(<binary_expr>.<right_expr>, s) =
+                               undef)
+               then error
+                     else
+                     if (<binary_expr>.<operator> == '+' then
+                        Me(<binary_expr>.<left_expr>, s) +
+                                Me(<binary_expr>.<right_expr>, s)
+                     else Me(<binary_expr>.<left_expr>, s) *
+                          Me(<binary_expr>.<right_expr>, s)
+              ...
+
+
+
+.               1-40
+Assignment Statements
+
+• Maps state sets to state sets U {error}
+
+Ma(x := E, s) =
+    if Me(E, s) == error
+       then error
+       else s’ =
+      {<i1,v1’>,<i2,v2’>,...,<in,vn’>},
+                where for j = 1, 2, ..., n,
+                    if ij == x
+                      then vj’ = Me(E, s)
+                      else vj’ = VARMAP(ij, s)
+
+
+
+
+.   1-41
+Logical Pretest Loops
+
+• Maps state sets to state sets U {error}
+
+Ml(while B do L, s) =
+    if Mb(B, s) == undef
+        then error
+        else if Mb(B, s) == false
+            then s
+            else if Msl(L, s) == error
+                   then error
+                   else Ml(while B do L, Msl(L, s))
+
+
+
+
+.   1-42
+Loop Meaning
+
+• The meaning of the loop is the value of the
+  program variables after the statements in the loop
+  have been executed the prescribed number of
+  times, assuming there have been no errors
+• In essence, the loop has been converted from
+  iteration to recursion, where the recursive control
+  is mathematically defined by other recursive state
+  mapping functions
+
+     - Recursion, when compared to iteration, is easier
+        to describe with mathematical rigor
+
+.   1-43
+Evaluation of Denotational Semantics
+
+• Can be used to prove the correctness of
+  programs
+• Provides a rigorous way to think about
+  programs
+• Can be an aid to language design
+• Has been used in compiler generation
+  systems
+• Because of its complexity, it are of little use
+  to language users
+
+.   1-44
+Axiomatic Semantics
+
+• Based on formal logic (predicate calculus)
+• Original purpose: formal program
+  verification
+• Axioms or inference rules are defined for
+  each statement type in the language (to
+  allow transformations of logic expressions
+  into more formal logic expressions)
+• The logic expressions are called assertions
+
+
+
+.   1-45
+Axiomatic Semantics (continued)
+• An assertion before a statement (a
+  precondition) states the relationships and
+  constraints among variables that are true at
+  that point in execution
+• An assertion following a statement is a
+  postcondition
+• A weakest precondition is the least
+   restrictive precondition that will guarantee
+   the postcondition
+
+
+.   1-46
+Axiomatic Semantics Form
+
+• Pre-, post form: {P} statement {Q}
+
+• An example
+      – a = b + 1 {a > 1}
+      – One possible precondition: {b > 10}
+      – Weakest precondition:      {b > 0}
+
+
+
+
+.   1-47
+ Program Proof Process
+
+• The postcondition for the entire program is
+  the desired result
+   – Work back through the program to the first
+     statement. If the precondition on the first
+     statement is the same as the program
+     specification, the program is correct.
+
+
+
+
+  .   1-48
+Axiomatic Semantics: Assignment
+
+• An axiom for assignment statements
+  (x = E): {Qx->E} x = E {Q}
+
+• The Rule of Consequence:
+                                 {P}S {Q}, P'  P, Q  Q'
+                                                   {P'} S {Q'}
+
+
+
+
+.            1-49
+Axiomatic Semantics: Sequences
+
+• An inference rule for sequences of the form
+  S1; S2
+
+    {P1} S1 {P2}
+    {P2} S2 {P3}
+
+
+                {P1}S1{P2},{P2}S2 {P3}
+                    {P1}S1; S2 {P3}
+
+
+
+
+.   1-50
+Axiomatic Semantics: Selection
+
+• An inference rules for selection
+  - if B then S1 else S2
+
+      {B and P} S1 {Q}, {(not B) and P} S2 {Q}
+           {P} if B then S1 else S2 {Q}
+
+
+
+
+.   1-51
+Axiomatic Semantics: Loops
+• An inference rule for logical pretest loops
+
+    {P} while B do S end {Q}
+
+                                   (I and B) S {I}
+                          {I} while B do S {I and (not B)}
+
+
+    where I is the loop invariant (the inductive
+    hypothesis)
+
+
+
+
+ .       1-52
+Axiomatic Semantics: Axioms
+• Characteristics of the loop invariant: I must
+  meet the following conditions:
+    –    P => I -- the loop invariant must be true initially
+    –    {I} B {I} -- evaluation of the Boolean must not change the validity of I
+    –    {I and B} S {I} -- I is not changed by executing the body of the loop
+    –    (I and (not B)) => Q           -- if I is true and B is false, Q is implied
+
+    –    The loop terminates -- can be difficult to prove
+
+
+
+
+ .                           1-53
+Loop Invariant
+
+• The loop invariant I is a weakened version
+  of the loop postcondition, and it is also a
+  precondition.
+• I must be weak enough to be satisfied prior
+  to the beginning of the loop, but when
+  combined with the loop exit condition, it
+  must be strong enough to force the truth of
+  the postcondition
+
+
+
+.   1-54
+Evaluation of Axiomatic Semantics
+
+• Developing axioms or inference rules for all
+  of the statements in a language is difficult
+• It is a good tool for correctness proofs, and
+  an excellent framework for reasoning about
+  programs, but it is not as useful for
+  language users and compiler writers
+• Its usefulness in describing the meaning of
+  a programming language is limited for
+  language users or compiler writers
+
+
+.   1-55
+Denotation Semantics vs Operational
+Semantics
+• In operational semantics, the state changes
+  are defined by coded algorithms
+• In denotational semantics, the state
+  changes are defined by rigorous
+  mathematical functions
+
+
+
+
+.   1-56
+Summary
+
+• BNF and context-free grammars are
+  equivalent meta-languages
+      – Well-suited for describing the syntax of
+        programming languages
+• An attribute grammar is a descriptive
+  formalism that can describe both the
+  syntax and the semantics of a language
+• Three primary methods of semantics
+  description
+      – Operation, axiomatic, denotational
+
+.   1-57
+

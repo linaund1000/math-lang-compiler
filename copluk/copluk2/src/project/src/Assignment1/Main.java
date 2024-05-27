@@ -1,4 +1,4 @@
-package Assignment1;
+package copluk.copluk2.src.project.src.Assignment1;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
