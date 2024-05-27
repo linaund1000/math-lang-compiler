@@ -1,0 +1,96 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class ASTNode {
+  - toString(): String
+}
+
+class StatementNode extends ASTNode {
+  - toString(): String
+}
+
+class ExpressionNode extends ASTNode {
+  - evaluate(): int
+  - toString(): String
+}
+
+class ProgramNode {
+  - statements: List<StatementNode>
+  - toString(): String
+}
+
+class StatementListNode {
+  - statements: List<StatementNode>
+  - toString(): String
+}
+
+class AssignmentNode extends StatementNode {
+  - variable: String
+  - expression: ExpressionNode
+  - toString(): String
+}
+
+class IfNode extends StatementNode {
+  - expression: ExpressionNode
+  - statementList: StatementListNode
+  - toString(): String
+}
+
+class WhileNode extends StatementNode {
+  - expression: ExpressionNode
+  - statementList: StatementListNode
+  - toString(): String
+}
+
+class BinaryOperationNode extends ExpressionNode {
+  - left: ExpressionNode
+  - operator: Token
+  - right: ExpressionNode
+  - toString(): String
+}
+
+class NumberNode extends ExpressionNode {
+  - value: int
+  - toString(): String
+}
+
+class VariableNode extends ExpressionNode {
+  - name: String
+  - value: int
+  - toString(): String
+}
+
+class ParenthesisNode extends ExpressionNode {
+  - expression: ExpressionNode
+  - toString(): String
+}
+
+class ComparisonNode extends ExpressionNode {
+  - left: ExpressionNode
+  - operator: Token
+  - right: ExpressionNode
+  - toString(): String
+}
+
+class BlockNode extends StatementNode {
+  - statements: StatementListNode
+  - toString(): String
+}
+
+ASTNode <|-- StatementNode
+ASTNode <|-- ExpressionNode
+StatementNode <|-- ProgramNode
+StatementNode <|-- StatementListNode
+StatementNode <|-- AssignmentNode
+StatementNode <|-- IfNode
+StatementNode <|-- WhileNode
+ExpressionNode <|-- BinaryOperationNode
+ExpressionNode <|-- NumberNode
+ExpressionNode <|-- VariableNode
+ExpressionNode <|-- ParenthesisNode
+ExpressionNode <|-- ComparisonNode
+StatementNode <|-- BlockNode
+
+note "Abstract Syntax Tree" as N1
+N1 .> ASTNode
+@enduml

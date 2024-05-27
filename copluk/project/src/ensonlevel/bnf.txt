@@ -1,0 +1,34 @@
+<program> ::= <statement_list> EOF
+
+<statement_list> ::= <statement> (<statement_separator> <statement>)*
+<statement_separator> ::= ";" 
+
+<statement> ::= <assignment> | <if_statement> | <while_statement> | <expression>
+
+<assignment> ::= <identifier> ASSIGN <expression>
+
+<if_statement> ::= "eğer" <expression> "ise" <statement> ("degilise" <statement>)?
+
+<while_statement> ::= "dön" <expression> "doğru" <statement>
+
+<expression> ::= <term> ((ADD | SUB) <term>)*
+<term> ::= <factor> ((MUL | DIV) <factor>)*
+<factor> ::= <number> | <identifier> | "(" <expression> ")"
+
+<number> ::= [0-9]+
+<identifier> ::= [a-zA-ZçÇğĞıİöÖşŞüÜ_][a-zA-Z0-9çÇğĞıİöÖşŞüÜ_]*
+ADD ::= "+"
+SUB ::= "-"
+MUL ::= "*"
+DIV ::= "/"
+LPAREN ::= "("
+RPAREN ::= ")"
+COLON ::= ":"
+ASSIGN ::= "="
+EOF ::= <end of file>
+
+KEYWORD ::= "eğer" | "degilise" | "dön" | "eşit" | "değil" | "doğru" | "yanlış" | "son" | "ise"
+RELOP ::= "eşit" | "değil"
+BOOL ::= "doğru" | "yanlış"
+
+IDENTIFIER ::= [a-zA-ZçÇğĞıİöÖşŞüÜ_][a-zA-Z0-9çÇğĞıİöÖşŞüÜ_]*

@@ -1,0 +1,1 @@
+eger (b esit 1) ise: a = 1; b = 2; c = 3; d = 4; e = 5; son! eger (c esit 3) ise: f = 6; g = 7; h = 8; son!
